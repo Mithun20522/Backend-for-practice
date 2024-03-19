@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cookies from 'cookie-parser';
 import UserRouter from './E-commerce/routes/user.route.js';
+import productRouter from './E-commerce/routes/product.route.js';
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,7 @@ mongoose.connect(MONGO_DB_URL)
 
 
 app.use('/api/user',UserRouter);
+app.use('/api/product',productRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
