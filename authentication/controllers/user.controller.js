@@ -50,3 +50,19 @@ export const logout = async(req, res) => {
     }
     
 }
+
+export const update = async(req, res) => {
+    try {
+        const isExist = await User.findById({_id: req.params.id})
+        if(!isExist) return res.status(404).json({message:'User not found'});
+        if(req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(req.body.password, salt);
+            req.body.password = hashedPassword;
+        }
+        const updatedDetails = await User.findByIdAndUpdate(isExist._id, req.body, {new:true});
+        return res.status(200).json(updatedDetails);
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
