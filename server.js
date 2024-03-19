@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cookies from 'cookie-parser';
-import UserRouter from './authentication/routes/user.route.js';
+import UserRouter from './E-commerce/routes/user.route.js';
 dotenv.config();
 
 const app = express();
