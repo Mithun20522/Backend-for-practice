@@ -26,7 +26,10 @@ export const login = async(req, res) => {
         if(!isExist) return res.status(404).json({message:"User Not found"});
         const isMatched = await bcrypt.compare(password, isExist.password);
         if(!isMatched) return res.status(400).json({message:"Incorrect Password"});
-        
+
+        const isAlreadyLoggedIn = req.cookies.token;
+        if(isAlreadyLoggedIn) return res.status(400).json({message:'You are already logged in'});
+
         const token = jwt.sign({userId:isExist._id}, process.env.SECRET_TOKEN_KEY, {expiresIn: '1h'});
         res.cookie('token', token, {httpOnly:true, maxAge:3600000});
         res.status(200).json({message:'Logged in Successfully'});
