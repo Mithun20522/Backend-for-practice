@@ -37,3 +37,16 @@ export const login = async(req, res) => {
         return res.status(500).json({error: error.message});
     }
 }
+
+export const logout = async(req, res) => {
+    try {
+        const token = req.cookies.token;
+        if(!token) return res.status(400).json({message: 'Login required'});
+        res.clearCookie('token');
+        return res.status(200).json({message:'logout successfully'});
+        
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+    
+}
