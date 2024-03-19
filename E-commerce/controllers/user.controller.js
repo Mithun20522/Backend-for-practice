@@ -78,3 +78,25 @@ export const deleteUser = async(req, res) => {
         return res.status(500).json({error:error.message});
     }
 }
+
+
+export const getAllUsers = async(req, res) => {
+    try {
+        const users = await User.find();
+        if(users.length === 0) return res.status(404).json({message: 'You have no users!'});
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
+
+export const getUser = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const isExist = await User.findById({_id:id});
+        if(!isExist) return res.status(404).json({message: 'No user found'});
+        return res.status(200).json(isExist);
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
