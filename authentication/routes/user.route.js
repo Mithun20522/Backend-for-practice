@@ -1,9 +1,9 @@
 import exppress from 'express';
-import { register } from '../controllers/user.controller.js';
+import { login, register } from '../controllers/user.controller.js';
 
 const router = exppress.Router();
 
 router.post('/register', register);
-
+router.post('/login', login);
 export default router;
 
