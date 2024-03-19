@@ -19,7 +19,6 @@ export const create = async(req,res) => {
 export const getAllProducts = async(req, res) => {
     try {
         const products = await Product.find();
-        console.log(products);
         if(products.length === 0) return res.status(404).json({message: 'You have no products available!'});
         return res.status(200).json(products);
     } catch (error) {
@@ -33,6 +32,28 @@ export const getProduct = async(req, res) => {
         const isExist = await Product.findById({_id:id});
         if(!isExist) return res.status(404).json({message: 'Product not found'});
         return res.status(200).json(isExist);
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
+
+export const update = async(req, res) => {
+    try {
+        const updateData = req.body;
+        const updateDetails = await Product.findByIdAndUpdate(req.params.id, updateData,{new:true});
+        if(!updateDetails) return res.status(404).json({message: 'Product not found'});
+        return res.status(200).json(updateDetails);
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
+
+export const deleteProduct = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const deletedProduct = await Product.findByIdAndDelete({_id:id});
+        if(!deletedProduct) return res.status(404).json({message: 'Product not found'});
+        return res.status(200).json({message: 'Product deleted successfully'}); 
     } catch (error) {
         return res.status(500).json({error:error.message});
     }
