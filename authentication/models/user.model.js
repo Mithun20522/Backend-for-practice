@@ -8,11 +8,24 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true,
-        unique:true
+        unique:true,
+        validate:{
+            validator: function(email){
+                const emailRegx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,4}/
+                return emailRegx.test(email)
+            },
+            message: 'Email format is invalid'
+        }
     },
     password:{
         type:String,
-        required:true
+        required:true,
+        validate:{
+            validator: function(password){
+                return password.length >=8;
+            },
+            message: 'Password must be of atleast 8 characters long'
+        }
     }
 },{timestamps:true});
 
@@ -25,7 +38,7 @@ userSchema.pre('save', async function(next){
         this.password = hashedPassword;
         next();
     } catch (error) {
-        console.log(error)
+        console.log(error.message)
     }
 
 })
